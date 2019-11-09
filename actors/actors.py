@@ -57,16 +57,13 @@ class Director(Human):
         return f'{self.first_name} {self.last_name}'
 
     def get_age(self):
-        return YearIntoAgeConverter(self.birth_year)
+        return YearIntoAgeConverter(self.birth_year).get_age()
 
     def get_country(self):
         return self.country
 
     def introduce_myself(self):
-        if self.sex == "Male":
-            return f"Director {self.get_name()} is {self.get_age()} years old"
-        else:
-            return f"Actress {self.get_name()} is {self.get_age()} years old"
+        return f"Director {self.get_name()} is {self.get_age()} years old"
 
 
 class Actor(Human):
@@ -82,16 +79,24 @@ class Actor(Human):
         return f'{self.first_name} {self.last_name}'
 
     def get_age(self):
-        return YearIntoAgeConverter(self.birth_year)
+        return YearIntoAgeConverter(self.birth_year).get_age()
 
     def get_country(self):
         return self.country
 
     def introduce_myself(self):
-        if self.sex == "Male":
-            return f"Actor {self.get_name} is {self.get_age()} years old"
-        else:
-            return f"Actress {self.get_name} is {self.get_age()} years old"
+        sex = "Actor"
+        origin = "."
+        if self.sex != "Male":
+            sex = "Actress"
+        if self.country:
+            origin = f" and comes from {self.country}."
+        return f"{sex} {self.get_name()} is {self.get_age()} years old{origin}"
+
+hAR=Actor("Harrison","Ford",1942,"USA")
+print(hAR.introduce_myself())
+print(hAR.get_name())
+print(hAR.get_age())
 
 # Klasa film i klasa aktor
 # Plik tekstowy z imionami nazwiskami rokiem urodzenia i krajem pochodzenia aktorów

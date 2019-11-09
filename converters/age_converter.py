@@ -10,8 +10,8 @@ class YearIntoAgeConverter:
         self.birthyear = birthyear
         self.validate()
 
-    def __repr__(self):
-        return f'This converter will tell you how many years old is someone born in {self.birthyear}'
+    # def __repr__(self):
+    #     return f'This converter will tell you how many years old is someone born in {self.birthyear}'
 
     def validate(self):
         if type(self.birthyear) != int \
@@ -21,7 +21,6 @@ class YearIntoAgeConverter:
 
     def get_age(self):
         return self.current_year-self.birthyear
-
 
 
 

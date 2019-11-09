@@ -17,7 +17,7 @@ class Cast:
 
 
 class Movie:
-    MOVIE_TYPES=[
+    MOVIE_TYPES = [
         "comedy",
         "adventure",
         "horror",
@@ -27,20 +27,27 @@ class Movie:
         "crime",
         "romantic comedy",
         "action",
-        "fantasy"
+        "fantasy",
+        "melodrama",
+        "historic",
+        'animated',
+        "thriller",
+        "musical"
     ]
-    def __init__(self, title, type, year_of_production=None, rate=None):
+
+    def __init__(self, title, type_of_movie, year_of_production=None, rate=None):
         self.title = title
         self.year_of_production = year_of_production
         self.description = None
         self.cast = Cast()
         self.rate = rate
 
-        while type not in self.MOVIE_TYPES:
+        while self.MOVIE_TYPES.count(type_of_movie) == 0:
+            print(f'{type_of_movie} is not on the list!')
             print(f"\nWhat kind of movie is {self.title}?")
             print(self.MOVIE_TYPES)
-            type=(input("Please enter a movie type from above list: "))
-        self.type = type
+            type_of_movie = (input("Please enter a movie type from above list: "))
+        self.type = type_of_movie
 
     def get_rate(self):
         while not 0 <= self.rate <= 10:
@@ -66,3 +73,5 @@ class Movie:
 
     def show_cast(self):
         self.cast.print_cast()
+
+
