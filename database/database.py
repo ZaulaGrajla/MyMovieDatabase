@@ -6,14 +6,11 @@ class Database():
     def remove_from_database(self, existing_object):
         pass
 
-    def look_for_title(self, existing_object):
-        pass
-
-    def look_for_year(self,existing_object):
-        pass
-
-    def look_for_actor(self, existing_object):
+    def look_for(self, object):
         pass
 
     def print_database_content(self):
+        pass
+
+    def get_database(self):
         pass

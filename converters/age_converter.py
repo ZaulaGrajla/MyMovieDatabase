@@ -6,21 +6,25 @@ class YearIntoAgeConverter:
 
     current_year = int(datetime.datetime.strftime(datetime.datetime.now(), "%Y"))
 
-    def __init__(self, birthyear):
-        self.birthyear = birthyear
+    def __init__(self, birth_year, death_year=None):
+        self.birth_year = birth_year
+        self.death_year = death_year
         self.validate()
 
     # def __repr__(self):
-    #     return f'This converter will tell you how many years old is someone born in {self.birthyear}'
+    #     return f'This converter will tell you how many years old is someone born in {self.birth_year}'
 
     def validate(self):
-        if type(self.birthyear) != int \
-                or self.birthyear < 1850 \
-                or self.birthyear > self.current_year:
-            raise ValueError("Incorrect year format!")
+        dates = [self.birth_year]
+        if self.death_year is not None:
+            if self.death_year<self.birth_year:
+                raise ValueError("Death cannot happen before birthday")
+            dates.append(self.death_year)
+        for date in dates:
+            if type(date) != int or date < 1850 or date > self.current_year:
+                raise ValueError("Incorrect year format!")
 
     def get_age(self):
-        return self.current_year-self.birthyear
-
-
-
+        if self.death_year is not None:
+            return self.death_year-self.birth_year
+        return self.current_year - self.birth_year

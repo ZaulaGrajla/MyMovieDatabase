@@ -1,3 +1,6 @@
+from actors import Actor
+
+
 class Cast:
     def __init__(self):
         self.cast = {}
@@ -14,6 +17,8 @@ class Cast:
     def print_cast(self):
         for actor, role in self.cast.items():
             print('%16s as %s' % (actor.get_name(), role))
+        print('\n')
+
 
 
 class Movie:
@@ -68,10 +73,11 @@ class Movie:
         return self.title
 
     def add_cast(self, actor, role):
-        self.cast.add_to_cast(actor, role)
-        actor.filmography.add_movie(self, role)
+        if isinstance(actor, Actor):
+            self.cast.add_to_cast(actor, role)
+            actor.filmography.add_movie(self, role)
 
     def show_cast(self):
         self.cast.print_cast()
-
+        return ''
 
