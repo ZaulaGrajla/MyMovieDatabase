@@ -16,9 +16,7 @@ class Cast:
 
     def print_cast(self):
         for actor, role in self.cast.items():
-            print('%16s as %s' % (actor.get_name(), role))
-        print('\n')
-
+            print('%20s as %s' % (actor.get_name(), role))
 
 
 class Movie:
@@ -37,7 +35,8 @@ class Movie:
         "historic",
         'animated',
         "thriller",
-        "musical"
+        "musical",
+        "western"
     ]
 
     def __init__(self, title, type_of_movie, year_of_production=None, rate=None):
@@ -81,3 +80,5 @@ class Movie:
         self.cast.print_cast()
         return ''
 
+    def introduce_myself(self):
+        return f'"{self.get_title()}" is {self.type}.\nThis movie was made in {self.year_of_production}.\nCast:'

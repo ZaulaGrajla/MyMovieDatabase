@@ -2,7 +2,11 @@ import time
 
 from database import MovieDatabase
 from database.actors_database import ActorsDatabase
-from readfromfiles.read_data_from_file import ReadActorsFromTxt, ReadMoviesFromTxt, ReadCastFromTxt
+from readfromfiles.read_data_from_file import ReadCastFromTxt
+
+
+class Options:
+    pass
 
 
 class MovieApplication:
@@ -11,62 +15,113 @@ class MovieApplication:
         self.my_movies = MovieDatabase()
         self.my_actors = ActorsDatabase()
         ReadCastFromTxt().read_cast(self.my_movies, self.my_actors)
+        self.options = {
+            '0': self.exit_app,
+            '1': self.show_all_my_movies,
+            '3': self.show_all_my_movies_with_cast,
+            '2': self.show_all_my_actors,
+            '4': self.show_actor_filmography,
+            '5': self.show_movie_info,
+            '6': self.add_movie_to_database,
+            '7': self.add_actor_to_database,
+            '8': self.add_cast_to_movie
+        }
         self.intro()
 
+    @staticmethod
+    def add_actor_to_database():
+        print("This feature will be implemented soon")
+        pass
+
+    @staticmethod
+    def add_movie_to_database():
+        print("This feature will be implemented soon")
+        pass
+
+    @staticmethod
+    def add_cast_to_movie():
+        print("This feature will be implemented soon")
+        pass
+
+    def show_movie_info(self):
+        movie_title = input("Please enter title of movie you are looking for:\n")
+        while movie_title not in self.my_movies.database.keys():
+            movie_title = input(
+                "There is no such movie in my database."
+                "\nPlease enter another title of movie.\n(Press 1 to quit)\n")
+            if movie_title == '1':
+                self.exit_app()
+        print('\n___________________________________________________________________')
+        print(self.my_movies.database[movie_title].introduce_myself())
+        return self.my_movies.database[movie_title].show_cast()
+
+    def show_actor_filmography(self):
+        actor_name = input("Please enter name of actor/actress you are looking for:\n")
+        while actor_name not in self.my_actors.database.keys():
+            actor_name = input(
+                "There is no such person in my database."
+                "\nPlease enter another name of actor/actress.\n(Press 1 to quit)\n")
+            if actor_name == '1':
+                self.exit_app()
+        print('\n___________________________________________________________________')
+        print(self.my_actors.database[actor_name].introduce_myself(), '\n')
+        return self.my_actors.database[actor_name].show_filmography()
+
     def show_all_my_movies(self):
+        print("This is content of MyMovieDatabase:\n")
         return self.my_movies.print_database_content()
 
-
     def show_all_my_actors(self):
+        print("This is content of MyActorsDatabase:\n")
         return self.my_actors.print_database_content()
-
 
     def show_all_my_movies_with_cast(self):
         print("This is my database of movies with cast:\n")
+        time.sleep(2)
+        print("(This will take a moment...)")
+        time.sleep(2)
         for movie_title in self.my_movies.list_of_titles:
-            # time.sleep(1)
-            print(movie_title)
-            self.my_movies.database[movie_title].show_cast()
+            this_movie=self.my_movies.database[movie_title]
+            print('___________________________________________________________________')
+            time.sleep(0.3)
+            print(movie_title, f'({this_movie.get_year_of_production()})')
+            this_movie.show_cast()
+
         return
 
+    @staticmethod
+    def exit_app():
+        print("You've missed your chance to check out this wonderful program. Go and love yourself :)")
+        exit(0)
+
     def intro(self):
-        user = input("\nWhat would you like to see?\n1 - List of my movies\n2 - List of my actors\n"
-                     "3 - List of my movies with cast\n0 - Nothing\n")
-        while user not in ['1', '2', '3', '0']:
-            user = input("What would you like to see?\n1 - List of my movies\n2 - List of my actors\n"
-                         "3 - List of my movies with cast\n0 - Nothing\n")
-        if user == '1':
-            self.show_all_my_movies()
-            self.intro()
-        elif user == '2':
-            self.show_all_my_actors()
-            self.intro()
-        elif user == '3':
-            self.show_all_my_movies_with_cast()
-            self.intro()
-        elif user == '0':
-            print("You've missed your chance to check out this wonderful program. Go and love yourself :)")
-            exit(0)
+        user_wish = "?"
+        while user_wish not in self.options.keys():
+            user_wish = input("\nWhat would you like to do?\n"
+                              "1 - Show list of all my movies\n"
+                              "2 - Show list of all my actors\n"
+                              "3 - Show list of all my movies with cast\n"
+                              "4 - Look for actor\n"
+                              "5 - Look for movie\n"
+                              "6 - Add movie to database\n"
+                              "7 - Add actor to database\n"
+                              "8 - Add cast to movie\n"
+                              "0 - Nothing\n")
+        print('\n___________________________________________________________________')
+        self.options[user_wish]()
+        print('___________________________________________________________________')
+        time.sleep(5)
+        self.intro()
 
 
 if __name__ == "__main__":
     MovieApplication()
 
-# zrobił się syf
-# DONE syf z tym czy jest kropka w read files czy nie w importowanych modułach
-# to wszystko trzeba by porozdzielać i zrobić bardziej przejrzyste drzewko
-# zmień to z Read coś tam na My MovieDatabase w inicie będzie Readowanie czyli zaczytywanie read_from_file() i def read
-# MyActors Database to samo będzie zaczytywanie ale już przechowalnia
-# uwspólnij te databases
-# Singletony? Chyba na razie nie.
-# Cast potrzebuje aktorów i filmów więc jeśli nie będzie tych filmów w bazie to nie można dodać cast
-# a jeżeli będzie film ale nie actor to utworzy się nowy actor w bazie
-# main będzie wywoływał MyMovieDatabase()
-# MyActorsDatabase()
-# my_movies=MyMovieDatabase().database
-# my_actors=MyActorsDatabase().database
-# CastDatabase(my_movies,my_actors)
-
+# Tak naprawdę trzeba zaimplementować jeszcze tylko dodawanie nowych filmów i aktorów
+# zaznacz resztę że not implemented
+# i może tak żeby można było wpisywać nazwę obojętnie jakimi literami a i tak znajdzie film
+# po gatunku żeby można było szukać
+# dodać ocenę do filmu
 
 # Klasa film i klasa aktor
 # Plik tekstowy z imionami nazwiskami rokiem urodzenia i krajem pochodzenia aktorów
@@ -97,30 +152,3 @@ if __name__ == "__main__":
 # imię, nazwisko, rok urodzenia, kraj pochodzenia
 # filmografia: obiekty (nie dodajemy filmów do filmografii - założenie jest, że dodajemy filmy do bazy)
 # filmografia to też może być mała klasa która będzie przechowywała tytuł filmu rocznik i rolę
-
-
-# # harrison=Actor("Harrison","Ford",1942,"USA")
-# # indiana = Movie("Raiders of the lost ark", 1980)
-# # # harrison.filmography.add_movie(indiana, "Indiana Jones")
-# #
-# harrison = Actor('Harrison', "Ford",1942, "USA")
-# indiana = Movie("Raiders of the lost ark","adventure", 1980)
-# indiana2 = Movie("Temple of doom", "adventure",1980)
-# indiana3 = Movie("Indiana Jones and the last Crusade", "adventure",1989)
-# starwarsy=Movie("Star Wars: Episode IV New Hope", "fantasy",1977)
-# # indiana.add_cast(harrison, "Indiana Jones")
-# # indiana.show_cast()
-# # print(indiana)
-# print(indiana.get_title())
-# # harrison.filmography.add_movie(indiana,"Indiana Jones")
-# # harrison.filmography.add_movie(indiana2,"Indiana Jones")
-# # harrison.filmography.add_movie(indiana3,"Indiana Jones")
-# # harrison.filmography.add_movie(starwarsy,"Han Solo")
-# #
-# harrison.filmography.print_filmography()
-# print(harrison.filmography.active_years)
-# indiana.add_cast(harrison,"Indiana Jones")
-# willie=Actor("Cate","Spielberg",1960,"USA","Female")
-# indiana.add_cast(willie,"Willie Scott")
-# # harrison.filmography.print_filmography()
-# indiana.show_cast()

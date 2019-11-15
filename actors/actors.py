@@ -10,15 +10,16 @@ class Filmography:
         self.active_years = set()
 
     def add_movie(self, movie, role: str):
-        self.filmography.append({movie.get_year_of_production(): [movie.get_title(), role]})
-        self.active_years.add(movie.get_year_of_production())
+        self.filmography.append({int(movie.get_year_of_production()): [movie.get_title(), role]})
+        self.active_years.add(int(movie.get_year_of_production()))
 
     def print_filmography(self):
+        self.active_years=sorted((list(self.active_years)))
         for year in self.active_years:
             for position in self.filmography:
                 if year in position.keys():
-                    print('%4s \t %24s \t as %16s' % (year, position[year][0], position[year][1]))
-
+                    print('%4s \t %48s \t as %16s' % (year, position[year][0], position[year][1]))
+        self.active_years=set(self.active_years)
 
 class Human():
 
@@ -71,11 +72,14 @@ class Actor(Human):
                  death_year=None, ):
         self.first_name = first_name
         self.last_name = last_name
-        self.birth_year = birth_year
+        self.birth_year = int(birth_year)
         self.country = country
         self.filmography = Filmography()
         self.sex = sex
-        self.death_year = death_year
+        if death_year is not None:
+            self.death_year = int(death_year)
+        else:
+            self.death_year=death_year
 
     def get_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -94,17 +98,14 @@ class Actor(Human):
         if self.sex != "Male":
             sex = "Actress"
         if self.country:
-            origin = f" and comes from {self.country}."
+            origin = f" and comes from {self.country}"
         if self.death_year is not None:
             return f"{sex} {self.get_name()} was born in {self.birth_year} in {self.country} " \
-                   f"and died in {self.death_year} at the age of {self.get_age()}"
+                   f"and died in {self.death_year} at the age of {self.get_age()}."
         if self.birth_year is None:
             return f"{sex} {self.get_name()}"
-        return f"{sex} {self.get_name()} is {self.get_age()} years old{origin}"
+        return f"{sex} {self.get_name()} is {self.get_age()} years old{origin}."
 
-# hAR = Actor("Harrison", "Ford", 1942, "USA", "Male",2008)
-# hAR = Actor("Harrison", "Ford")
-# print(hAR.introduce_myself())
-# print(hAR.get_name())
-# print(hAR.get_age())
+    def show_filmography(self):
+        return self.filmography.print_filmography()
 
