@@ -117,38 +117,4 @@ class MovieApplication:
 if __name__ == "__main__":
     MovieApplication()
 
-# Tak naprawdę trzeba zaimplementować jeszcze tylko dodawanie nowych filmów i aktorów
-# zaznacz resztę że not implemented
-# i może tak żeby można było wpisywać nazwę obojętnie jakimi literami a i tak znajdzie film
-# po gatunku żeby można było szukać
-# dodać ocenę do filmu
 
-# Klasa film i klasa aktor
-# Plik tekstowy z imionami nazwiskami rokiem urodzenia i krajem pochodzenia aktorów
-# Plik tekstowy z filmami tytuł rok gatunek
-# W filmach do dodania jest opis i ocena
-# W mainie można zrobić tak:
-# wyświetlić bazę filmów (alfabetycznie, rocznikami lub gatunkami)
-# wtedy zaczytuje cały plik tekstowy
-# wyświetlić bazę aktorów - alfabetycznie
-# szukać filmu lub aktora - trzeba podać poprawnie imię lub nazwisko lub tytuł
-# wtedy zaczyta tylko tę linijkę z pliku tekstowego
-# w filmie można dodać opis lub ocenę lub obsade
-# U aktorów wyświetlić filmy z bazy do których są podpięci
-# Baza filmów: "Tytuł filmu": obiekt film
-# Baza aktor: "Imię i nazwisko": obiekt aktor
-
-# Movie:
-# tytuł, rok, gatunek w inicie
-# do dodania opis, ocena
-# self.cast=Cast()
-# w klasie Cast mamy defa który dodaje aktora i rolę którą grał w inicie może być proszony reżyser isinstance
-# jeden def co returnuje dict{} z cast najlepiej może nawet printuje listę actor as role
-# do dodania obsada: {obiekt aktor:rola którą grał + tu reżyser na pierwszym miejscu}
-# za każdym razem jak dodajemy aktora do obsady to w jego filmografii pojawia się tytuł filmu rocznik i rola
-# możemy analogicznie zrobić funkcję z usuwaniem
-
-# Actor:
-# imię, nazwisko, rok urodzenia, kraj pochodzenia
-# filmografia: obiekty (nie dodajemy filmów do filmografii - założenie jest, że dodajemy filmy do bazy)
-# filmografia to też może być mała klasa która będzie przechowywała tytuł filmu rocznik i rolę
