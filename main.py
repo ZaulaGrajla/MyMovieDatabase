@@ -1,4 +1,8 @@
 import time
+from builtins import staticmethod
+from functools import partial
+
+from tools import line_printer
 
 from database import MovieDatabase
 from database.actors_database import ActorsDatabase
@@ -18,8 +22,8 @@ class MovieApplication:
         self.options = {
             '0': self.exit_app,
             '1': self.show_all_my_movies,
-            '3': self.show_all_my_movies_with_cast,
             '2': self.show_all_my_actors,
+            '3': self.show_all_my_movies_with_cast,
             '4': self.show_actor_filmography,
             '5': self.show_movie_info,
             '6': self.add_movie_to_database,
@@ -43,6 +47,10 @@ class MovieApplication:
         print("This feature will be implemented soon")
         pass
 
+    @staticmethod
+    def print_with_nl():
+        return partial(print, end="\n")
+
     def show_movie_info(self):
         movie_title = input("Please enter title of movie you are looking for:\n")
         while movie_title not in self.my_movies.database.keys():
@@ -51,7 +59,7 @@ class MovieApplication:
                 "\nPlease enter another title of movie.\n(Press 1 to quit)\n")
             if movie_title == '1':
                 self.exit_app()
-        print('\n___________________________________________________________________')
+        line_printer.line()
         print(self.my_movies.database[movie_title].introduce_myself())
         return self.my_movies.database[movie_title].show_cast()
 
@@ -63,31 +71,30 @@ class MovieApplication:
                 "\nPlease enter another name of actor/actress.\n(Press 1 to quit)\n")
             if actor_name == '1':
                 self.exit_app()
-        print('\n___________________________________________________________________')
-        print(self.my_actors.database[actor_name].introduce_myself(), '\n')
+        line_printer.line()
+        self.print_with_nl(self.my_actors.database[actor_name].introduce_myself())
         return self.my_actors.database[actor_name].show_filmography()
 
     def show_all_my_movies(self):
-        print("This is content of MyMovieDatabase:\n")
+        self.print_with_nl("This is content of MyMovieDatabase:")
         return self.my_movies.print_database_content()
 
     def show_all_my_actors(self):
-        print("This is content of MyActorsDatabase:\n")
+        self.print_with_nl("This is content of MyActorsDatabase:")
         return self.my_actors.print_database_content()
 
     def show_all_my_movies_with_cast(self):
-        print("This is my database of movies with cast:\n")
+        self.print_with_nl("This is my database of movies with cast:")
         time.sleep(2)
-        print("(This will take a moment...)")
+        print("(This may take a moment...)")
         time.sleep(2)
         for movie_title in self.my_movies.list_of_titles:
             this_movie=self.my_movies.database[movie_title]
-            print('___________________________________________________________________')
-            time.sleep(0.3)
+            line_printer.line()
+            time.sleep(0.5)
             print(movie_title, f'({this_movie.get_year_of_production()})')
             this_movie.show_cast()
-
-        return
+        pass
 
     @staticmethod
     def exit_app():
@@ -107,9 +114,9 @@ class MovieApplication:
                               "7 - Add actor to database\n"
                               "8 - Add cast to movie\n"
                               "0 - Nothing\n")
-        print('\n___________________________________________________________________')
+        line_printer.line()
         self.options[user_wish]()
-        print('___________________________________________________________________')
+        line_printer.line()
         time.sleep(5)
         self.intro()
 

@@ -1,5 +1,5 @@
 import unittest
-from converters.age_converter import YearIntoAgeConverter
+from tools.age_converter import YearIntoAgeConverter
 
 
 class YearIntoAgeConverterTest(unittest.TestCase):
