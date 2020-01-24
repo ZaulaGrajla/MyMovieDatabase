@@ -40,9 +40,3 @@ Shrek, animated, 2001,
 Shrek 2, animated, 2004,
 Dances with Wolves, western, 1990,
 Bodyguard, musical, 1992,
-End of the list,
-
-
-
-
-

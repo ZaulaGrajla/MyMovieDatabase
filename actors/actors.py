@@ -14,12 +14,13 @@ class Filmography:
         self.active_years.add(int(movie.get_year_of_production()))
 
     def print_filmography(self):
-        self.active_years=sorted((list(self.active_years)))
+        self.active_years = sorted((list(self.active_years)))
         for year in self.active_years:
             for position in self.filmography:
                 if year in position.keys():
                     print('%4s \t %48s \t as %16s' % (year, position[year][0], position[year][1]))
-        self.active_years=set(self.active_years)
+        self.active_years = set(self.active_years)
+
 
 class Human():
 
@@ -79,7 +80,7 @@ class Actor(Human):
         if death_year is not None:
             self.death_year = int(death_year)
         else:
-            self.death_year=death_year
+            self.death_year = death_year
 
     def get_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -108,4 +109,3 @@ class Actor(Human):
 
     def show_filmography(self):
         return self.filmography.print_filmography()
-

@@ -78,7 +78,7 @@ class Movie:
 
     def show_cast(self):
         self.cast.print_cast()
-        return ''
+        pass
 
     def introduce_myself(self):
         return f'"{self.get_title()}" is {self.type}.\nThis movie was made in {self.year_of_production}.\nCast:'

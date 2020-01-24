@@ -6,7 +6,7 @@ class Database():
     def remove_from_database(self, existing_object):
         pass
 
-    def look_for(self, object):
+    def look_for(self, obj):
         pass
 
     def print_database_content(self):

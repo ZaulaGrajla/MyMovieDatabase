@@ -1,13 +1,13 @@
 from actors import Actor
 from database import Database
-from readfromfiles.read_data_from_file import ReadActorsFromTxt
+from readfromfiles.read_data_from_file import ReadFromTxt
 
 
 class ActorsDatabase(Database):
     def __init__(self):
         self.database = dict()
         self.list_of_actors = []
-        ReadActorsFromTxt(self).read_actors()
+        ReadFromTxt(self, '\\actors.txt', Actor).read_data()
 
     def add_to_database(self, actor):
         if not isinstance(actor, Actor):
@@ -27,7 +27,7 @@ class ActorsDatabase(Database):
     def remove_from_database(self, existing_object):
         pass
 
-    def look_for(self,object):
+    def look_for(self, obj):
         pass
 
 

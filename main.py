@@ -1,16 +1,11 @@
+import datetime
 import time
 from builtins import staticmethod
-from functools import partial
-
-from tools import line_printer
-
 from database import MovieDatabase
 from database.actors_database import ActorsDatabase
-from readfromfiles.read_data_from_file import ReadCastFromTxt
-
-
-class Options:
-    pass
+from movies import Movie
+from readfromfiles.read_data_from_file import ReadCastFromTxt, ReadFromTxt
+from tools import line_printer
 
 
 class MovieApplication:
@@ -37,10 +32,39 @@ class MovieApplication:
         print("This feature will be implemented soon")
         pass
 
-    @staticmethod
-    def add_movie_to_database():
-        print("This feature will be implemented soon")
-        pass
+    def add_movie_to_database(self):
+        title = input("Please enter title of the movie.\n").capitalize()
+        while title in self.my_movies.list_of_titles:
+            title = input("This movie exists already in database!\nEnter another title of movie.\n").capitalize()
+        for ind, typ in enumerate(Movie.MOVIE_TYPES):
+            print(ind + 1, typ)
+        genre = 0
+        while genre not in range(1, len(Movie.MOVIE_TYPES) + 1):
+            try:
+                genre = int(input("Please choose a type of movie.\n"))
+            except ValueError:
+                continue
+        genre = Movie.MOVIE_TYPES[genre - 1]
+        year = 0
+        while 1900 >= year or year >= int(datetime.datetime.strftime(datetime.datetime.now(), "%Y")):
+            try:
+                year = int(input("Please enter year of production.\n"))
+            except ValueError:
+                continue
+        line_printer.line()
+        print("Title:", title, "\nType:", genre, "\nYear of production:", year)
+        line_printer.line()
+        validation = input(
+            "Are you sure you want to add such movie to database?\ny for yes\nn for no\nc for correct data\n")
+        if validation == "y":
+            with open('readfromfiles\\movies.txt', 'a+') as f:
+                f.read()
+                f.write(f'\n{title}, {genre}, {year},')
+                self.my_movies.add_to_database(Movie(title, genre, year))
+        elif validation == "c":
+            self.add_movie_to_database()
+        else:
+            self.intro()
 
     @staticmethod
     def add_cast_to_movie():
@@ -48,8 +72,8 @@ class MovieApplication:
         pass
 
     @staticmethod
-    def print_with_nl():
-        return partial(print, end="\n")
+    def print_with_nl(string):
+        return print(string, end="\n")
 
     def show_movie_info(self):
         movie_title = input("Please enter title of movie you are looking for:\n")
@@ -89,7 +113,7 @@ class MovieApplication:
         print("(This may take a moment...)")
         time.sleep(2)
         for movie_title in self.my_movies.list_of_titles:
-            this_movie=self.my_movies.database[movie_title]
+            this_movie = self.my_movies.database[movie_title]
             line_printer.line()
             time.sleep(0.5)
             print(movie_title, f'({this_movie.get_year_of_production()})')
@@ -104,24 +128,24 @@ class MovieApplication:
     def intro(self):
         user_wish = "?"
         while user_wish not in self.options.keys():
-            user_wish = input("\nWhat would you like to do?\n"
-                              "1 - Show list of all my movies\n"
-                              "2 - Show list of all my actors\n"
-                              "3 - Show list of all my movies with cast\n"
-                              "4 - Look for actor\n"
-                              "5 - Look for movie\n"
-                              "6 - Add movie to database\n"
-                              "7 - Add actor to database\n"
-                              "8 - Add cast to movie\n"
-                              "0 - Nothing\n")
+            user_wish = input("""
+What would you like to do?\n
+        1 - Show me alphabetical list of all my movies
+        2 - Show me list of all my actors
+        3 - Show me list of all my movies with cast
+        4 - Look for an actor
+        5 - Look for a movie
+        6 - Add movie to database
+        7 - Add actor to database
+        8 - Add cast to movie
+        0 - Nothing
+""")
         line_printer.line()
         self.options[user_wish]()
         line_printer.line()
-        time.sleep(5)
+        time.sleep(3)
         self.intro()
 
 
 if __name__ == "__main__":
     MovieApplication()
-
-

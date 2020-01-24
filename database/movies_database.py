@@ -1,6 +1,6 @@
 from database import Database
 from movies.movies import Movie
-from readfromfiles.read_data_from_file import ReadMoviesFromTxt
+from readfromfiles.read_data_from_file import ReadFromTxt
 
 
 class MovieDatabase(Database):
@@ -8,7 +8,7 @@ class MovieDatabase(Database):
     def __init__(self):
         self.database = dict()
         self.list_of_titles = []
-        ReadMoviesFromTxt(self).read_movies()
+        ReadFromTxt(self, '\\movies.txt', Movie).read_data()
 
     def add_to_database(self, new_object):
         if not isinstance(new_object, Movie):
@@ -21,15 +21,21 @@ class MovieDatabase(Database):
     def remove_from_database(self, existing_object):
         pass
 
-    def look_for(self, object):
+    def look_for(self, obj):
         pass
 
     def print_database_content(self):
+        letters = []
         for movie in self.list_of_titles:
+            letter = movie[0].upper()
+            if letter not in letters:
+                print(letter)
+                letters.append(letter)
             print(movie)
 
     def get_database(self):
         return self.database.values()
+
 
 
 
