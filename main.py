@@ -1,4 +1,5 @@
 import datetime
+import re
 import time
 from builtins import staticmethod
 from database import MovieDatabase
@@ -75,27 +76,38 @@ class MovieApplication:
     def print_with_nl(string):
         return print(string, end="\n")
 
-    def show_movie_info(self):
-        movie_title = input("Please enter title of movie you are looking for:\n")
-        while movie_title not in self.my_movies.database.keys():
-            movie_title = input(
-                "There is no such movie in my database."
-                "\nPlease enter another title of movie.\n(Press 1 to quit)\n")
-            if movie_title == '1':
-                self.exit_app()
+    def look_for(self, search, database, text1, text2):
+        name = input(f"Please enter {search} you are looking for:\n").lower()
+        temp = 0
+        while name not in database:
+            for data in database:
+                if re.search(name.lower(), data.lower()):
+                    temp += 1
+                    if temp == 1:
+                        self.print_with_nl("Here are some suggestions:")
+                    print(data)
+            if name == '1':
+                return
+            line_printer.line()
+            name = input(
+                f"There is {text1} '{name}' in my database."
+                f"\nPlease enter {text2}\n(Press 1 to quit this option)\n")
         line_printer.line()
+        return name
+
+    def show_movie_info(self):
+        movie_title = self.look_for("title of movie", self.my_movies.list_of_titles, "no movie titled",
+                                    "correct or another title of movie.")
+        if not movie_title:
+            return
         print(self.my_movies.database[movie_title].introduce_myself())
         return self.my_movies.database[movie_title].show_cast()
 
     def show_actor_filmography(self):
-        actor_name = input("Please enter name of actor/actress you are looking for:\n")
-        while actor_name not in self.my_actors.database.keys():
-            actor_name = input(
-                "There is no such person in my database."
-                "\nPlease enter another name of actor/actress.\n(Press 1 to quit)\n")
-            if actor_name == '1':
-                self.exit_app()
-        line_printer.line()
+        actor_name = self.look_for("name of actor/actress", self.my_actors.list_of_actors, "no such person",
+                                   "correct or another name of actor/actress.")
+        if not actor_name:
+            return
         self.print_with_nl(self.my_actors.database[actor_name].introduce_myself())
         return self.my_actors.database[actor_name].show_filmography()
 
@@ -143,7 +155,7 @@ What would you like to do?\n
         line_printer.line()
         self.options[user_wish]()
         line_printer.line()
-        time.sleep(3)
+        time.sleep(2)
         self.intro()
 
 
