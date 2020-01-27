@@ -1,5 +1,6 @@
 import os
 
+
 class ReadFromTxt:
     """This class can serve both actor and movie database"""
 

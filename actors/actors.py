@@ -46,7 +46,7 @@ class Human():
 
 
 class Director(Human):
-    def __init__(self, first_name: str, last_name: str, birth_year=None, country=None, sex='Male'):
+    def __init__(self, first_name: str, last_name: str, birth_year=None, country=None, sex='m'):
         self.first_name = first_name
         self.last_name = last_name
         self.birth_year = birth_year
@@ -69,7 +69,7 @@ class Director(Human):
 
 
 class Actor(Human):
-    def __init__(self, first_name: str, last_name: str, birth_year: int = None, country=None, sex='Male',
+    def __init__(self, first_name: str, last_name: str, birth_year: int = None, country=None, sex='m',
                  death_year=None, ):
         self.first_name = first_name
         self.last_name = last_name
@@ -96,7 +96,7 @@ class Actor(Human):
     def introduce_myself(self):
         sex = "Actor"
         origin = "."
-        if self.sex != "Male":
+        if self.sex != "m":
             sex = "Actress"
         if self.country:
             origin = f" and comes from {self.country}"
